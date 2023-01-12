@@ -1,10 +1,15 @@
 package com.vmware.retail.inventory.service;
 
+import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+import static nyla.solutions.core.util.Text.generateId;
 
 /**
  * @author gregory green
@@ -16,10 +21,12 @@ public class TransactionDataService implements TransactionService{
     private final StoreProductInventoryRepository storeProductInventoryRepository;
 
     @Override
-    public void saveTransaction(Transaction transaction) {
+    @Transactional
+    public void saveTransaction(POSTransaction pos) {
+        var transaction =  Transaction.builder().posTransaction(pos).id(toTransactionId(pos)).build();
         transactionRepository.save(transaction);
 
-        var storeProductId = toStoreProductId(transaction);
+        var storeProductId = toStoreProductId(pos);
         var inventoryResults = storeProductInventoryRepository.findById(storeProductId);
 
         if(inventoryResults.isEmpty())
@@ -36,11 +43,16 @@ public class TransactionDataService implements TransactionService{
         storeProductInventoryRepository.save(inventory);
     }
 
-    protected String toStoreProductId(Transaction transaction) {
-        return new StringBuilder().append(
-                transaction.storeId())
+    protected String toTransactionId(POSTransaction pos) {
+        return new StringBuilder().append(pos.itemId()).append("|")
+                .append(pos.storeId())
+                .append(generateId()).toString();
+    }
+
+    protected String toStoreProductId(POSTransaction transaction) {
+        return new StringBuilder().append(transaction.itemId())
                 .append("|")
-                .append(transaction.itemId()).toString();
+                .append(transaction.storeId()).toString();
     }
 
 }

@@ -1,8 +1,8 @@
 package com.vmware.retail.inventory.service;
 
-import com.vmware.retail.inventory.domain.pos.Transaction;
+import com.vmware.retail.inventory.domain.pos.POSTransaction;
 
 public interface TransactionService {
-    void saveTransaction(Transaction transaction);
+    void saveTransaction(POSTransaction transaction);
 
 }

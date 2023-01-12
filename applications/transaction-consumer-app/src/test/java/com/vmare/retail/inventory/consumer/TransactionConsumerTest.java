@@ -1,6 +1,6 @@
 package com.vmare.retail.inventory.consumer;
 
-import com.vmware.retail.inventory.domain.pos.Transaction;
+import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.service.TransactionService;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class TransactionConsumerTest {
 
     @Mock
     private TransactionConsumer subject;
-    private Transaction expected = JavaBeanGeneratorCreator.of(Transaction.class).create();
+    private POSTransaction expected = JavaBeanGeneratorCreator.of(POSTransaction.class).create();
 
     @Test
     void given__when_save_then_when_save_then_repository_saves() {
@@ -29,7 +29,7 @@ class TransactionConsumerTest {
 
         subject.accept(expected);
 
-        verify(this.service).saveTransaction(any(Transaction.class));
+        verify(this.service).saveTransaction(any(POSTransaction.class));
 
     }
 }

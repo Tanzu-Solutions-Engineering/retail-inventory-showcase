@@ -1,6 +1,7 @@
 package com.vmware.retail.inventory.service;
 
 import com.vmware.retail.inventory.domain.StoreProductInventory;
+import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,13 +32,13 @@ class TransactionDataServiceTest {
 
    @Mock
    private TransactionDataService subject;
-   private Transaction transaction;
+   private POSTransaction transaction;
     private StoreProductInventory storeProductInventory;
 
     @BeforeEach
     void setUp() {
         subject = new TransactionDataService(transactionRepository,storeProductInventoryRepository);
-        transaction = JavaBeanGeneratorCreator.of(Transaction.class).create();
+        transaction = JavaBeanGeneratorCreator.of(POSTransaction.class).create();
         storeProductInventory = JavaBeanGeneratorCreator.of(StoreProductInventory.class).create();
     }
 
@@ -58,7 +60,15 @@ class TransactionDataServiceTest {
 
     @Test
     void given_transaction_when_toId_then_return_Id() {
-        String expectedId = transaction.storeId()+ "|"+ transaction.itemId();
+        String expectedId = transaction.itemId() +"|"+ transaction.storeId();
         assertEquals(expectedId, subject.toStoreProductId(transaction));
+    }
+
+    @Test
+    void toTransactionId() {
+        POSTransaction pos = JavaBeanGeneratorCreator.of(POSTransaction.class).create();
+        var actual = subject.toTransactionId(pos);
+
+        assertThat(actual).startsWith(pos.itemId());
     }
 }

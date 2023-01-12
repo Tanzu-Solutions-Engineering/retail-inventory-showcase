@@ -1,4 +1,15 @@
 package com.vmware.retail.inventory.domain.pos;
 
-public record Transaction(String storeId, String registerId, Double total,String itemId) {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Transaction {
+    private String id;
+    private POSTransaction posTransaction;
 }

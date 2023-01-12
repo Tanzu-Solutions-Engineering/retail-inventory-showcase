@@ -1,7 +1,8 @@
 package com.vmware.retail.inventory.controller;
 
 import com.vmware.retail.inventory.domain.ProductReorder;
-import com.vmware.retail.inventory.repository.ProductReorderRepository;
+import com.vmware.retail.inventory.reorder.controller.InventoryController;
+import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

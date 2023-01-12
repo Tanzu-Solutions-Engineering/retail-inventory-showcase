@@ -1,13 +1,13 @@
-package com.vmware.retail.inventory;
+package com.vmware.retail.inventory.reorder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RetailInventoryUiApp {
+public class ReorderApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RetailInventoryUiApp.class, args);
+		SpringApplication.run(ReorderApp.class, args);
 	}
 
 }

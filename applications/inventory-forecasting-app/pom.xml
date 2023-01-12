@@ -107,6 +107,11 @@
 			<classifier>test-binder</classifier>
 			<type>test-jar</type>
 		</dependency>
+		<dependency>
+			<groupId>com.vmware</groupId>
+			<artifactId>gemfire-services</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

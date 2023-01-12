@@ -1,8 +1,9 @@
-package com.vmware.retail.inventory.controller;
+package com.vmware.retail.inventory.reorder.controller;
 
 
-import com.vmware.retail.inventory.repository.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,9 @@ public class InventoryController {
     private final ThreadFactory factory;
     private final long refreshRateSecs;
 
-    public InventoryController(ProductReorderRepository repository, ThreadFactory factory, long refreshRateSecs) {
+    public InventoryController(ProductReorderRepository repository, ThreadFactory factory,
+                               @Value("${retail.reorder.refresh.rateSeconds:5}")
+                               long refreshRateSecs) {
         this.repository = repository;
         this.factory = factory;
         this.refreshRateSecs = refreshRateSecs;

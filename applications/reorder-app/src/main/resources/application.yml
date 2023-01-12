@@ -1,0 +1,8 @@
+spring:
+  application:
+      name: reorder-app
+  data:
+    gemfire:
+      pool:
+        default:
+          locators: localhost[10334]

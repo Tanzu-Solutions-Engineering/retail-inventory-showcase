@@ -1,12 +1,8 @@
 -- liquibase formatted sql
 -- changeset liquibaseuser:1
-CREATE TABLE inv_orders (
-    id text PRIMARY KEY,
-    DATA JSONB
-);
--- rollback drop table customer_orders;
 
-create table products(
+
+create table pos_transactions(
 id text PRIMARY KEY,
 DATA JSONB);
--- rollback drop table products;
+-- rollback drop table pos_transactions;

@@ -1,4 +1,4 @@
-package com.vmare.retail.inventory.consumer;
+package com.vmare.retail.inventory.consumer.listener;
 
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.service.TransactionService;
@@ -11,7 +11,6 @@ import java.util.function.Consumer;
  * @author gregory green
  */
 @RequiredArgsConstructor
-@Component
 public class TransactionConsumer implements Consumer<POSTransaction> {
 
     private final TransactionService transactionService;

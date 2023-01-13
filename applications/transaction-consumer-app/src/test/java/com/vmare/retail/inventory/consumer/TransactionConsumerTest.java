@@ -1,5 +1,6 @@
 package com.vmare.retail.inventory.consumer;
 
+import com.vmare.retail.inventory.consumer.listener.TransactionConsumer;
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.service.TransactionService;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;

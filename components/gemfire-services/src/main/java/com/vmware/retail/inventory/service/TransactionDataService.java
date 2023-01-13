@@ -14,7 +14,6 @@ import static nyla.solutions.core.util.Text.generateId;
 /**
  * @author gregory green
  */
-@Service
 @RequiredArgsConstructor
 public class TransactionDataService implements TransactionService{
     private final TransactionRepository transactionRepository;

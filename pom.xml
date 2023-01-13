@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.vmware</groupId>
     <artifactId>spring-modern-data-architecture-parent</artifactId>
     <packaging>pom</packaging>
@@ -12,6 +11,7 @@
     <modules>
         <module>components/retail-domains</module>
         <module>components/gemfire-services</module>
+        <module>components/database-services</module>
         <module>applications/reorder-app</module>
         <module>applications/transaction-consumer-app</module>
         <module>applications/inventory-forecasting-app</module>

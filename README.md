@@ -15,6 +15,13 @@ Start Locator
 start locator --name=locator1 --bind-address=127.0.0.1 --hostname-for-clients=127.0.0.1  --jmx-manager-hostname-for-clients=127.0.0.1 --http-service-bind-address=127.0.0.1 
 ```
 
+PDX
+
+```shell
+configure pdx --disk-store --read-serialized=true
+
+```
+
 Start Server
 
 ```shell

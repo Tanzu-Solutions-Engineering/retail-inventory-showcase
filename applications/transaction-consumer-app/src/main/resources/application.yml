@@ -1,0 +1,49 @@
+manufacturing:
+  demo:
+    delay:
+      ms: 5000
+server:
+  port: -1
+spring:
+  application:
+    name: "transaction-consumer-app"
+  data:
+    gemfire:
+      pool:
+        default:
+          locators:  localhost[10334]
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username : postgres
+  liquibase:
+    change-log: "classpath:db/changelog/changelog-v1.sql"
+  cloud:
+    #    function.definition: newOrderProcessor;newOrderProcessor
+    function:
+      definition: transactionConsumer
+    stream:
+      default:
+        contentType: "application/json"
+      bindings:
+        transactionConsumer-in-0:
+          destination: retail.transaction
+          group: ${spring.application.name}
+          consumer:
+            concurrency: 1
+      rabbit:
+        bindings:
+          transactionConsumer-in-0:
+            consumer:
+              autoBindDlq: true
+              quorum.enabled: true
+#              containerType: stream
+              queueNameGroupOnly: false
+#              quorum.enabled: true
+#              dlqQuorum:
+#                enabled: true
+              prefetch: 10000

@@ -14,16 +14,15 @@ import org.springframework.stereotype.Component;
 public class TransactionDbCacheWriter extends CacheWriterAdapter<String, Transaction> {
     private final TransactionJdbcRepository repository;
 
-
     @Override
     public void beforeCreate(EntryEvent<String, Transaction> event) throws CacheWriterException
     {
-        save(event.getNewValue());
+        this.repository.save(event.getNewValue());
     }
 
     @Override
     public void beforeUpdate(EntryEvent<String, Transaction> event) throws CacheWriterException {
-        save(event.getNewValue());
+        this.repository.save(event.getNewValue());
     }
 
     private void save(Transaction region) {

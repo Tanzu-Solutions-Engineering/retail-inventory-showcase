@@ -33,3 +33,17 @@ Create Regions
 ```shell
 run --file=/Users/Projects/VMware/Tanzu/Use-Cases/Vertical-Industries/VMware-Retail/dev/vmware-retail-inventory-showcase/deployments/repositories/gemfire/create_regions.gfsh
 ```
+
+
+# Testing
+
+contentType = application/json
+
+```json
+{
+  "storeId": "001",
+  "registerId": "LANE1",
+  "total": 3.3,
+  "itemId": "SKU-PEANUT-BUTTER"
+}
+```

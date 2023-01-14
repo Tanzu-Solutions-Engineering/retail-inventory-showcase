@@ -5,7 +5,7 @@ import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
@@ -15,20 +15,20 @@ import static nyla.solutions.core.util.Text.generateId;
  * @author gregory green
  */
 @RequiredArgsConstructor
+@Component
 public class TransactionDataService implements TransactionService{
-    private final TransactionRepository transactionRepository;
-    private final StoreProductInventoryRepository storeProductInventoryRepository;
 
-    @Override
     @Transactional
     public void saveTransaction(POSTransaction pos) {
+
+
         var transaction =  Transaction.builder().posTransaction(pos).id(toTransactionId(pos)).build();
         transactionRepository.save(transaction);
 
         var storeProductId = toStoreProductId(pos);
         var inventoryResults = storeProductInventoryRepository.findById(storeProductId);
 
-        if(inventoryResults.isEmpty())
+        if(inventoryResults == null || inventoryResults.isEmpty())
             return;
 
         var inventory = inventoryResults.get();
@@ -54,4 +54,6 @@ public class TransactionDataService implements TransactionService{
                 .append(transaction.storeId()).toString();
     }
 
+    private final TransactionRepository transactionRepository;
+    private final StoreProductInventoryRepository storeProductInventoryRepository;
 }

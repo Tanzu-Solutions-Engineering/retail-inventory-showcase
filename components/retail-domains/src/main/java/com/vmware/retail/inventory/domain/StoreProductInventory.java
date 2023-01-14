@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class StoreProductInventory {
+    private String id;
     private String productId;
     private String storeId;
     private long currentAvailable;

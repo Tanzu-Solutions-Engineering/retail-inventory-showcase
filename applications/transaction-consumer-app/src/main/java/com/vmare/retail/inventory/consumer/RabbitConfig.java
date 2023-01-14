@@ -1,19 +1,21 @@
 package com.vmare.retail.inventory.consumer;
 
 
+import com.vmware.retail.inventory.service.TransactionDataService;
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan(basePackageClasses = TransactionDataService.class)
 public class RabbitConfig {
 
     @Value("${spring.application.name}")
     private String applicationName;
-
 
     @Value("${spring.rabbitmq.username:guest}")
     private String username = "guest";
@@ -34,5 +36,8 @@ public class RabbitConfig {
     {
         return new Jackson2JsonMessageConverter();
     }
+
+
+
 
 }

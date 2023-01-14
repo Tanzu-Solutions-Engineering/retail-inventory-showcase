@@ -11,12 +11,13 @@ import java.util.function.Consumer;
  * @author gregory green
  */
 @RequiredArgsConstructor
+@Component
 public class TransactionConsumer implements Consumer<POSTransaction> {
-
-    private final TransactionService transactionService;
-
     @Override
     public void accept(POSTransaction transaction) {
+
         transactionService.saveTransaction(transaction);
     }
+
+    private final TransactionService transactionService;
 }

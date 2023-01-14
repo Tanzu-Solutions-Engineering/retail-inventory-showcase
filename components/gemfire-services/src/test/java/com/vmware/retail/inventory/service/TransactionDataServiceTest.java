@@ -18,8 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionDataServiceTest {
@@ -52,11 +51,25 @@ class TransactionDataServiceTest {
 
        subject.saveTransaction(transaction);
 
-       verify(this.transactionRepository).save(any(Transaction.class));
+       verify(this.transactionRepository).save(any());
         verify(this.storeProductInventoryRepository).save(any(StoreProductInventory.class));
 
         assertEquals(preCount-1, storeProductInventory.getCurrentAvailable());
    }
+
+
+    @Test
+    void given_Transaction_with_noInventory_when_save_then_saveTransaction() {
+
+        when(this.storeProductInventoryRepository.findById(anyString())).thenReturn(null);
+
+        subject.saveTransaction(transaction);
+
+
+        verify(this.transactionRepository).save(any());
+        verify(this.storeProductInventoryRepository,never()).save(any(StoreProductInventory.class));
+
+    }
 
     @Test
     void given_transaction_when_toId_then_return_Id() {

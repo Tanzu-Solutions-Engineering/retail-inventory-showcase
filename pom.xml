@@ -12,6 +12,7 @@
         <module>components/retail-domains</module>
         <module>components/gemfire-services</module>
         <module>components/database-services</module>
+        <module>components/retail-ml-models</module>
         <module>applications/reorder-app</module>
         <module>applications/transaction-consumer-app</module>
         <module>applications/inventory-forecasting-app</module>

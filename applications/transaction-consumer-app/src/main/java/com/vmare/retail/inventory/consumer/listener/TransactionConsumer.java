@@ -1,7 +1,7 @@
 package com.vmare.retail.inventory.consumer.listener;
 
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
-import com.vmware.retail.inventory.service.TransactionService;
+import com.vmware.retail.inventory.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

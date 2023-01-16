@@ -1,4 +1,4 @@
-package com.vmware.retail.inventory.service;
+package com.vmware.retail.inventory.service.transaction;
 
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.domain.pos.Transaction;

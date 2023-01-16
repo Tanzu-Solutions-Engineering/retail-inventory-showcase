@@ -5,7 +5,6 @@ import com.vmware.retail.inventory.repository.database.transaction.TransactionJd
 import lombok.RequiredArgsConstructor;
 import org.apache.geode.cache.CacheWriterException;
 import org.apache.geode.cache.EntryEvent;
-import org.apache.geode.cache.Region;
 import org.apache.geode.cache.util.CacheWriterAdapter;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
-package com.vmware.retail.inventory.service;
+package com.vmware.retail.inventory.service.transaction;
 
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
-import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
+import com.vmware.retail.inventory.service.transaction.TransactionDataService;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.vmare</groupId>
@@ -118,9 +118,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
-			<scope>test</scope>
-			<classifier>test-binder</classifier>
-			<type>test-jar</type>
 		</dependency>
 		<dependency>
 			<groupId>com.vmware</groupId>

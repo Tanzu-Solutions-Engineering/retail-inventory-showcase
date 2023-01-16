@@ -11,7 +11,7 @@ import com.vmware.retail.inventory.repository.store.StoreProductInventoryReposit
 import com.vmware.retail.inventory.repository.store.gemfire.StoreProductInvGfRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import com.vmware.retail.inventory.repository.transaction.gemfire.TransactionGfRepository;
-import com.vmware.retail.inventory.service.TransactionDataService;
+import com.vmware.retail.inventory.service.transaction.TransactionDataService;
 import org.apache.geode.cache.CacheWriter;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;

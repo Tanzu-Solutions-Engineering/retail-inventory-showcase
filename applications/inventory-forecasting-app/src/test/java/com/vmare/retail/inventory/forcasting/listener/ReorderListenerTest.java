@@ -1,7 +1,7 @@
 package com.vmare.retail.inventory.forcasting.listener;
 
+import com.vmare.retail.inventory.forcasting.service.ProductReorderService;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
-import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.Operation;
 import org.apache.geode.cache.query.CqEvent;
@@ -22,14 +22,14 @@ class ReorderListenerTest {
     @Mock
     private CqEvent cqEvent;
     @Mock
-    private ProductReorderRepository repository;
+    private ProductReorderService service;
     private StoreProductInventory storeProductInventory = JavaBeanGeneratorCreator.of(StoreProductInventory.class).create();
     @Mock
     private Operation baseOperation;
 
     @BeforeEach
     void setUp() {
-        subject = new ReorderListener(repository);
+        subject = new ReorderListener(service);
     }
 
     @Test
@@ -39,11 +39,10 @@ class ReorderListenerTest {
         when(cqEvent.getBaseOperation()).thenReturn(baseOperation);
         when(baseOperation.isDestroy()).thenReturn(false);
 
-        subject = new ReorderListener(repository);
 
         subject.check(cqEvent);
 
-        verify(repository).save(any());
+        verify(service).submitReorder(any(StoreProductInventory.class));
     }
 
     @Test
@@ -53,10 +52,10 @@ class ReorderListenerTest {
         when(cqEvent.getBaseOperation()).thenReturn(baseOperation);
         when(baseOperation.isDestroy()).thenReturn(true);
 
-        subject = new ReorderListener(repository);
+        subject = new ReorderListener(service);
 
         subject.check(cqEvent);
 
-        verify(repository,never()).save(any());
+        verify(service,never()).submitReorder(any());
     }
 }

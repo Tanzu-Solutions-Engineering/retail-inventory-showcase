@@ -1,7 +1,7 @@
 package com.vmare.retail.inventory.consumer;
 
 
-import com.vmware.retail.inventory.service.TransactionDataService;
+import com.vmware.retail.inventory.service.transaction.TransactionDataService;
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;

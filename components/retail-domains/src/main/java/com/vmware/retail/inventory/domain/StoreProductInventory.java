@@ -1,15 +1,18 @@
 package com.vmware.retail.inventory.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class StoreProductInventory {
     private String id;
     private String productId;
     private String storeId;
-    private long currentAvailable;
-    private ProductReorder reorderPoint;
+    private int currentAvailable;
 
 }

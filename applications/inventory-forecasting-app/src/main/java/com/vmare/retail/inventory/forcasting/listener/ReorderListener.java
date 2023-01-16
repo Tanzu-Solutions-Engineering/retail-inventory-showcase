@@ -1,7 +1,7 @@
 package com.vmare.retail.inventory.forcasting.listener;
 
+import com.vmare.retail.inventory.forcasting.service.ProductReorderService;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
-import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.geode.cache.query.CqEvent;
 import org.springframework.data.gemfire.listener.annotation.ContinuousQuery;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class ReorderListener {
-    private final ProductReorderRepository productReorderRepository;
+    private final ProductReorderService productReorderService;
 
     @ContinuousQuery(query =
             "select * " +
@@ -26,6 +26,6 @@ public class ReorderListener {
 
         StoreProductInventory inventory = (StoreProductInventory)cqEvent.getNewValue();
 
-        productReorderRepository.save(inventory.getReorderPoint());
+        productReorderService.submitReorder(inventory);
     }
 }

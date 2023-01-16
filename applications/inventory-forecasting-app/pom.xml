@@ -21,6 +21,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.vmware</groupId>
+			<artifactId>retail-ml-models</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vmware</groupId>
 			<artifactId>retail-domains</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class ProductReorder {
     private String id;
     private String productSku;
+    private String storeId;
     private int currentAvailable;
     private int avgLeadTimeDays;
     private int maxLeadTimeDays;
@@ -21,5 +22,4 @@ public class ProductReorder {
     private int maxDailySales;
     private int reorderLevel;
     private int orderQuantity;
-    private long estDeliveryDays;
 }

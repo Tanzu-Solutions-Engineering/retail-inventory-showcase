@@ -1,3 +1,4 @@
 create region --name=StoreProductInventory --type=PARTITION --partition-resolver=org.apache.geode.cache.util.StringPrefixPartitionResolver
 create region --name=Transaction  --type=PARTITION --colocated-with=/StoreProductInventory --partition-resolver=org.apache.geode.cache.util.StringPrefixPartitionResolver
 create region --name=ProductReorder --type=PARTITION --colocated-with=/StoreProductInventory --partition-resolver=org.apache.geode.cache.util.StringPrefixPartitionResolver
+create region --name=ProductReorderModelPrediction --type=PARTITION  --colocated-with=/StoreProductInventory  --partition-resolver=org.apache.geode.cache.util.StringPrefixPartitionResolver

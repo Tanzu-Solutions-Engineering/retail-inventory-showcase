@@ -9,6 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ *
+ * Testing for ProductReorderModelPrediction
+ * @author gregory green
+ */
 class ProductReorderModelPredictionTest {
     private ProductReorderModelPrediction subject;
     private StoreProductInventory storeProductInventory = JavaBeanGeneratorCreator.of(StoreProductInventory.class).create();

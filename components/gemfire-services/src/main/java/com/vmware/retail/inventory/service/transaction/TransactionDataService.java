@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDateTime;
+
 import static nyla.solutions.core.util.Text.generateId;
 
 /**
@@ -22,7 +24,11 @@ public class TransactionDataService implements TransactionService{
     public void saveTransaction(POSTransaction pos) {
 
 
-        var transaction =  Transaction.builder().posTransaction(pos).id(toTransactionId(pos)).build();
+        var transaction =  Transaction.builder()
+                .posTransaction(pos)
+                .id(toTransactionId(pos))
+                .createDateTime(LocalDateTime.now())
+                .build();
         transactionRepository.save(transaction);
 
         var storeProductId = toStoreProductId(pos);

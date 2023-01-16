@@ -4,5 +4,6 @@
 
 create table pos_transactions(
 id text PRIMARY KEY,
-DATA JSONB);
+data JSONB,
+created_ts TIMESTAMP NOT NULL DEFAULT now());
 -- rollback drop table pos_transactions;

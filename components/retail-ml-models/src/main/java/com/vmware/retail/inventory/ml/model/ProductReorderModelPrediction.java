@@ -2,14 +2,21 @@ package com.vmware.retail.inventory.ml.model;
 
 import com.vmware.retail.inventory.domain.ProductReorder;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProductReorderModelPrediction {
 
     private String id;
+
+    private String storeId;
+    private String productId;
     private int averageDailySales;
     private int averageDailyOrders;
     private int averageLeadTimeDays;

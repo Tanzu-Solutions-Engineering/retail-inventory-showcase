@@ -14,9 +14,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductReorderDataServiceTest {
@@ -44,7 +46,7 @@ class ProductReorderDataServiceTest {
 
     @DisplayName("Given model doesn't exist when submitReorder then train model and create initial order")
     @Test
-    void submitReorder() {
+    void submitReorder_noModel() {
 
 
        when(reorderTrainingRepository.train(any())).thenReturn(model);
@@ -53,6 +55,22 @@ class ProductReorderDataServiceTest {
         subject.submitReorder(inventory);
 
         verify(reorderTrainingRepository).train(inventory);
+
+        verify(productReorderRepository).save(any(ProductReorder.class));
+
+    }
+
+
+    @DisplayName("Given model exist when submitReorder then do not train model and save order")
+    @Test
+    void submitReorder_ModelExist() {
+
+
+        when(this.reorderInferenceRepository.findByProductIdAndStoreId(anyString(),anyString())).thenReturn(Optional.of(model));
+
+        subject.submitReorder(inventory);
+
+        verify(reorderTrainingRepository,never()).train(inventory);
 
         verify(productReorderRepository).save(any(ProductReorder.class));
 

@@ -1,0 +1,40 @@
+server:
+  port: -1
+spring:
+  application:
+    name: "inventory-forecasting-app"
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username : postgres
+  liquibase:
+    change-log: "classpath:db/changelog/changelog-v1.sql"
+  cloud:
+    #    function.definition: newOrderProcessor;newOrderProcessor
+    function:
+      definition: storeProductInventoryConsumer
+    stream:
+      default:
+        contentType: "application/json"
+      bindings:
+        storeProductInventoryConsumer-in-0:
+          destination: retail.storeProductInventory
+          group: ${spring.application.name}
+          consumer:
+            concurrency: 1
+      rabbit:
+        bindings:
+          storeProductInventoryConsumer-in-0:
+            consumer:
+              autoBindDlq: true
+              quorum.enabled: true
+#              containerType: stream
+              queueNameGroupOnly: false
+#              quorum.enabled: true
+#              dlqQuorum:
+#                enabled: true
+              prefetch: 10000

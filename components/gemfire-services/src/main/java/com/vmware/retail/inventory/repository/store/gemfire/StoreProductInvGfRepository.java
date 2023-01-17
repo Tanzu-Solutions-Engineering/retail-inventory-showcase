@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * GemFire repository implement for store product informations
+ * GemFire repository implement for store product information
  * @author gregory green
  */
 @RequiredArgsConstructor

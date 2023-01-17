@@ -10,6 +10,7 @@
     <name>retail-inventory-parent</name>
     <modules>
         <module>components/retail-domains</module>
+        <module>components/retail-services</module>
         <module>components/gemfire-services</module>
         <module>components/database-services</module>
         <module>components/retail-ml-models</module>

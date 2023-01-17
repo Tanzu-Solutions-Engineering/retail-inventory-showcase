@@ -1,4 +1,4 @@
-package com.vmare.retail.inventory.consumer;
+package com.vmare.retail.inventory.forcasting;
 
 import com.vmware.retail.inventory.repository.database.store.product.StoreProductInventoryJdbcRepository;
 import com.vmware.retail.inventory.repository.database.transaction.TransactionJdbcRepository;
@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackageClasses =
-        {TransactionJdbcRepository.class, StoreProductInventoryJdbcRepository.class})
+        {StoreProductInventoryJdbcRepository.class})
 public class JdbcConfig {
 }

@@ -14,5 +14,6 @@ public class StoreProductInventory {
     private String productId;
     private String storeId;
     private int currentAvailable;
+    private int reorderPoint;
 
 }

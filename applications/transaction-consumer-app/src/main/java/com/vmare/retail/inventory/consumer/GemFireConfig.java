@@ -8,7 +8,6 @@ import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
 import com.vmware.retail.inventory.repository.product.gemfire.ProductReorderGfRepository;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
-import com.vmware.retail.inventory.repository.store.gemfire.StoreProductInvGfRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import com.vmware.retail.inventory.repository.transaction.gemfire.TransactionGfRepository;
 import com.vmware.retail.inventory.service.transaction.TransactionDataService;
@@ -35,7 +34,7 @@ import java.util.function.Supplier;
 @ComponentScan(basePackageClasses = TransactionDataService.class)
 @EnablePdx
 @EnableGemfireRepositories(basePackageClasses = {ProductReorderRepository.class,
-        TransactionRepository.class, StoreProductInventoryRepository.class})
+        TransactionRepository.class})
 public class GemFireConfig {
 
     @Value("${spring.data.gemfire.pool.default.locators}")
@@ -69,15 +68,15 @@ public class GemFireConfig {
         return region;
     }
 
-    @Bean
-    ClientRegionFactoryBean<String, Transaction> storeProductInventoryRegion(GemFireCache gemFireCache)
-    {
-        var region = new ClientRegionFactoryBean();
-        region.setCache(gemFireCache);
-        region.setDataPolicy(DataPolicy.EMPTY);
-        region.setName("StoreProductInventory");
-        return region;
-    }
+//    @Bean
+//    ClientRegionFactoryBean<String, Transaction> storeProductInventoryRegion(GemFireCache gemFireCache)
+//    {
+//        var region = new ClientRegionFactoryBean();
+//        region.setCache(gemFireCache);
+//        region.setDataPolicy(DataPolicy.EMPTY);
+//        region.setName("StoreProductInventory");
+//        return region;
+//    }
 
     @Bean
     ProductReorderRepository productReorderRepository()
@@ -97,14 +96,14 @@ public class GemFireConfig {
         return new TransactionGfRepository(supplier);
     }
 
-    @Bean
-    StoreProductInventoryRepository storeProductInventoryRepository()
-    {
-        Supplier<Region<String, StoreProductInventory>> supplier =
-                () -> { return ClientCacheFactory.getAnyInstance().getRegion("StoreProductInventory");};
-
-        return new StoreProductInvGfRepository(supplier);
-    }
+//    @Bean
+//    StoreProductInventoryRepository storeProductInventoryRepository()
+//    {
+//        Supplier<Region<String, StoreProductInventory>> supplier =
+//                () -> { return ClientCacheFactory.getAnyInstance().getRegion("StoreProductInventory");};
+//
+//        return new StoreProductInvGfRepository(supplier);
+//    }
 
     @Bean
     public TransactionConsumer consumer(TransactionRepository transactionRepo,

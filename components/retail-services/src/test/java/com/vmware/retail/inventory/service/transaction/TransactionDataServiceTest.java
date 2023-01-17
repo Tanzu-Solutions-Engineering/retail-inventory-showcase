@@ -1,5 +1,8 @@
 package com.vmware.retail.inventory.service.transaction;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -33,16 +37,25 @@ class TransactionDataServiceTest {
    private TransactionDataService subject;
    private POSTransaction transaction;
     private StoreProductInventory storeProductInventory;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:sss");
+        objectMapper.setDateFormat(df);
+
         subject = new TransactionDataService(transactionRepository,storeProductInventoryRepository);
         transaction = JavaBeanGeneratorCreator.of(POSTransaction.class).create();
         storeProductInventory = JavaBeanGeneratorCreator.of(StoreProductInventory.class).create();
     }
 
     @Test
-   void given_Transaction_when_save_then_when_save_then_saveTransaction_and_updateInventory() {
+   void given_Transaction_when_save_then_when_save_then_saveTransaction_and_updateInventory() throws JsonProcessingException {
+
+        var json = objectMapper.writeValueAsString(transaction);
+        System.out.println(json);
 
         int preCount = 10;
         storeProductInventory.setCurrentAvailable(preCount);

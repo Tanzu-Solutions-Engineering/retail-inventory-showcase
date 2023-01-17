@@ -5,6 +5,7 @@ import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -18,17 +19,27 @@ import static nyla.solutions.core.util.Text.generateId;
  */
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class TransactionDataService implements TransactionService{
 
     @Transactional
     public void saveTransaction(POSTransaction pos) {
 
+        log.info("Saving POSTransaction: {}",pos);
+
+        var timestamp = pos.timestamp();
+
+        if(timestamp == null)
+            timestamp = LocalDateTime.now();
 
         var transaction =  Transaction.builder()
                 .posTransaction(pos)
                 .id(toTransactionId(pos))
-                .createDateTime(LocalDateTime.now())
+                .createDateTime(timestamp)
                 .build();
+
+
+        log.info("Saving transaction: {}",transaction);
         transactionRepository.save(transaction);
 
         var storeProductId = toStoreProductId(pos);

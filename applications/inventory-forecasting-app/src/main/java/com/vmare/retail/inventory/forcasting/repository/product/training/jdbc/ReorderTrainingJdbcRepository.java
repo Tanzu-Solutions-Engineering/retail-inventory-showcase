@@ -35,6 +35,19 @@ public class ReorderTrainingJdbcRepository implements ReorderTrainingRepository 
          ) daily_product_sales;
 
 
+     -- LEAD TIME
+
+     SELECT
+         avg(day_orders_cnt)::INTEGER avg_daily_orders,
+         max(lead_time_days)::INTEGER max_lead_time_days
+     FROM
+         (select count(*) day_orders_cnt, max(lead_time_days) lead_time_days, date_trunc('day', created_ts)
+         from  pos_orders
+         WHERE store_id = '001' and
+         product_id = 'SKU-PEANUT-BUTTER'
+         GROUP BY  date_trunc('day', created_ts))
+     pos_orders_counts;
+
      * @param inventory
      * @return
      */
@@ -65,11 +78,46 @@ public class ReorderTrainingJdbcRepository implements ReorderTrainingRepository 
 
         Map<String,?> sales_results = this.template.queryForMap(pos_transaction_sql,inputMap);
 
-        int avgDailySales = (Integer)sales_results.get("avg_sales");
-        int maxDailySales = (Integer)sales_results.get("max_sales");
+        int avgDailySales = 0;
+        Object results = sales_results.get("avg_sales");
+        if(results != null)
+            avgDailySales = (Integer)results;
 
-        int avgDailyOrders = -1 ; //TODO
-        int maxLeadTimeDays = -1; //TODO
+
+        int maxDailySales = 0;
+        results = sales_results.get("max_sales");
+        if(results != null)
+            maxDailySales = (Integer)results;
+
+        int avgDailyOrders = 3 ; //TODO
+        int maxLeadTimeDays = 5; //TODO
+
+        var leadSQL = """
+                SELECT 
+                    avg(day_orders_cnt)::INTEGER avg_daily_orders,
+                    max(lead_time_days)::INTEGER max_lead_time_days
+                FROM    
+                (select count(*) day_orders_cnt, max(lead_time_days) lead_time_days, date_trunc('day', created_ts)
+                from  pos_orders
+                WHERE store_id = :storeId and
+                    product_id = :productId
+                GROUP BY  date_trunc('day', created_ts))
+                pos_orders_counts;
+                """;
+
+        Map<String,Object> leadTimeResults = this.template.queryForMap(leadSQL,inputMap);
+
+
+        if(leadTimeResults != null && !leadTimeResults.isEmpty())
+        {
+             results = leadTimeResults.get("max_lead_time_days");
+            if(results != null)
+                maxLeadTimeDays = (Integer)results;
+
+            results = leadTimeResults.get("avg_daily_orders");
+            if(results != null)
+                avgDailyOrders = (Integer)results;
+        }
 
         return ProductReorderModelPrediction
                 .builder()

@@ -35,7 +35,8 @@ run --file=/Users/Projects/VMware/Tanzu/Use-Cases/Vertical-Industries/VMware-Ret
 ```
 
 
-# Testing
+# Transaction Testing
+
 
 contentType = application/json
 
@@ -45,5 +46,31 @@ contentType = application/json
   "registerId": "LANE1",
   "total": 3.3,
   "itemId": "SKU-PEANUT-BUTTER"
+}
+```
+
+With Timestamp
+
+```json
+{
+  "storeId":"001",
+  "registerId":"LANE1",
+  "total": 3.33,
+  "itemId":"SKU-PEANUT-BUTTER",
+  "timestamp":"2023-01-17T10:36:54.82721"
+}
+```
+
+
+# StoreProductInventory Testing
+
+Exchange: retail.storeProductInventory
+
+```json
+{
+  "id": "SKU-PEANUT-BUTTER|001",
+  "productId": "SKU-PEANUT-BUTTER",
+  "storeId": "001",
+  "currentAvailable": 10
 }
 ```

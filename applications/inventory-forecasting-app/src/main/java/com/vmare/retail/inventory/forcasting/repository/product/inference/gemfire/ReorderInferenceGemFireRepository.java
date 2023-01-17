@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Repository
 @RequiredArgsConstructor
 public class ReorderInferenceGemFireRepository implements ReorderInferenceRepository {
 

@@ -1,11 +1,14 @@
 package com.vmware.retail.inventory.service.transaction;
 
+import ch.qos.logback.core.net.server.ConcurrentServerRunner;
+import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.domain.pos.POSTransaction;
 import com.vmware.retail.inventory.domain.pos.Transaction;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nyla.solutions.core.patterns.integration.Publisher;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -21,6 +24,10 @@ import static nyla.solutions.core.util.Text.generateId;
 @Component
 @Slf4j
 public class TransactionDataService implements TransactionService{
+
+    private final TransactionRepository transactionRepository;
+    private final StoreProductInventoryRepository storeProductInventoryRepository;
+    private final Publisher<StoreProductInventory> storeProducerInventoryPublisher;
 
     @Transactional
     public void saveTransaction(POSTransaction pos) {
@@ -55,8 +62,12 @@ public class TransactionDataService implements TransactionService{
         if(currentAvailability > 0 )
             currentAvailability--;
 
+
         inventory.setCurrentAvailable(currentAvailability);
-        storeProductInventoryRepository.save(inventory);
+
+        storeProducerInventoryPublisher.send(inventory);
+
+        //TODO: storeProductInventoryRepository.save(inventory);
     }
 
     protected String toTransactionId(POSTransaction pos) {
@@ -71,6 +82,5 @@ public class TransactionDataService implements TransactionService{
                 .append(transaction.storeId()).toString();
     }
 
-    private final TransactionRepository transactionRepository;
-    private final StoreProductInventoryRepository storeProductInventoryRepository;
+
 }

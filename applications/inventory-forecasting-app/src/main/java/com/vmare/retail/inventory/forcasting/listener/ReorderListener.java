@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 /**
  * @author gregory green
  */
-@RequiredArgsConstructor
 @Component
 @Slf4j
 public class ReorderListener {
     private final ProductReorderService productReorderService;
+
+    public ReorderListener(ProductReorderService productReorderService){
+        this.productReorderService = productReorderService;
+    }
 
     @ContinuousQuery(query =
             "select *                                           " +

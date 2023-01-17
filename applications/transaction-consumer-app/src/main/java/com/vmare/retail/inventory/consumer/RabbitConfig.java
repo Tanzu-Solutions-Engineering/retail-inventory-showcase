@@ -1,8 +1,12 @@
 package com.vmare.retail.inventory.consumer;
 
 
+import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.service.transaction.TransactionDataService;
+import lombok.extern.slf4j.Slf4j;
+import nyla.solutions.core.patterns.integration.Publisher;
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Slf4j
 @ComponentScan(basePackageClasses = TransactionDataService.class)
 public class RabbitConfig {
 
@@ -39,5 +44,17 @@ public class RabbitConfig {
 
 
 
+    @Bean
+    Publisher<StoreProductInventory> storeProductInventoryPublisher(RabbitTemplate rabbitTemplate)
+    {
+
+        Publisher<StoreProductInventory> publisher =
+                storeInventory -> {
+                    log.info("SENDING updates for StoreProductInventory {}",storeInventory);
+                    rabbitTemplate.convertAndSend("retail.storeProductInventory", storeInventory.getProductId(),storeInventory);
+                };
+
+        return publisher;
+    }
 
 }

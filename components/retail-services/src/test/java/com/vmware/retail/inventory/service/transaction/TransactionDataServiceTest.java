@@ -9,6 +9,7 @@ import com.vmware.retail.inventory.repository.store.StoreProductInventoryReposit
 import com.vmware.retail.inventory.repository.transaction.TransactionRepository;
 import com.vmware.retail.inventory.service.transaction.TransactionDataService;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
+import nyla.solutions.core.patterns.integration.Publisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +40,9 @@ class TransactionDataServiceTest {
     private StoreProductInventory storeProductInventory;
     private ObjectMapper objectMapper;
 
+    @Mock
+    private Publisher<StoreProductInventory> publisher;
+
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
@@ -46,7 +50,7 @@ class TransactionDataServiceTest {
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:sss");
         objectMapper.setDateFormat(df);
 
-        subject = new TransactionDataService(transactionRepository,storeProductInventoryRepository);
+        subject = new TransactionDataService(transactionRepository,storeProductInventoryRepository, publisher);
         transaction = JavaBeanGeneratorCreator.of(POSTransaction.class).create();
         storeProductInventory = JavaBeanGeneratorCreator.of(StoreProductInventory.class).create();
     }
@@ -65,7 +69,7 @@ class TransactionDataServiceTest {
        subject.saveTransaction(transaction);
 
        verify(this.transactionRepository).save(any());
-        verify(this.storeProductInventoryRepository).save(any(StoreProductInventory.class));
+        verify(this.publisher).send(any(StoreProductInventory.class));
 
         assertEquals(preCount-1, storeProductInventory.getCurrentAvailable());
    }

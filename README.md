@@ -61,6 +61,16 @@ With Timestamp
 }
 ```
 
+```json
+{
+  "storeId":"001",
+  "registerId":"LANE1",
+  "total": 3.33,
+  "itemId":"SKU-PEANUT-BUTTER",
+  "timestamp":"2023-01-16T10:36:54.82721"
+}
+```
+
 
 # StoreProductInventory Testing
 
@@ -72,5 +82,15 @@ Exchange: retail.storeProductInventory
   "productId": "SKU-PEANUT-BUTTER",
   "storeId": "001",
   "currentAvailable": 10
+}
+```
+
+
+```json
+{
+  "id": "SKU-PEANUT-BUTTER|001",
+  "productId": "SKU-PEANUT-BUTTER",
+  "storeId": "001",
+  "currentAvailable": 50
 }
 ```

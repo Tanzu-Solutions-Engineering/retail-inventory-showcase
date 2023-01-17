@@ -89,12 +89,16 @@ public class ReorderTrainingJdbcRepository implements ReorderTrainingRepository 
         if(results != null)
             maxDailySales = (Integer)results;
 
-        int avgDailyOrders = 3 ; //TODO
-        int maxLeadTimeDays = 5; //TODO
+        int avgDailyOrders = 3 ;
+        int maxDailyOrders = 3 ;
+        int maxLeadTimeDays = 5;
+        int avgLeadTimeDays = 5;
 
         var leadSQL = """
                 SELECT 
                     avg(day_orders_cnt)::INTEGER avg_daily_orders,
+                    max(lead_time_days)::INTEGER max_daily_orders,
+                    avg(lead_time_days)::INTEGER avg_lead_time_days,
                     max(lead_time_days)::INTEGER max_lead_time_days
                 FROM    
                 (select count(*) day_orders_cnt, max(lead_time_days) lead_time_days, date_trunc('day', created_ts)
@@ -114,17 +118,29 @@ public class ReorderTrainingJdbcRepository implements ReorderTrainingRepository 
             if(results != null)
                 maxLeadTimeDays = (Integer)results;
 
+            results = leadTimeResults.get("avg_lead_time_days");
+            if(results != null)
+                avgLeadTimeDays = (Integer)results;
+
             results = leadTimeResults.get("avg_daily_orders");
             if(results != null)
                 avgDailyOrders = (Integer)results;
+
+
+            results = leadTimeResults.get("max_daily_orders");
+            if(results != null)
+                maxDailyOrders = (Integer)results;
+
         }
 
         return ProductReorderModelPrediction
                 .builder()
                 .averageDailySales(avgDailySales)
+                .maxDailyOrders(maxDailyOrders)
                 .maxDailySales(maxDailySales)
                 .averageDailyOrders(avgDailyOrders)
                 .maxLeadTimeDays(maxLeadTimeDays)
+                .averageLeadTimeDays(avgLeadTimeDays)
                 .storeId(inventory.getStoreId())
                 .productId(inventory.getProductId())
                 .id(inventory.getId()).build();

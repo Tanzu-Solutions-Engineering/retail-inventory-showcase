@@ -1,11 +1,11 @@
 package com.vmare.retail.inventory.forcasting.service;
 
-import com.vmare.retail.inventory.forcasting.repository.product.inference.ReorderInferenceRepository;
 import com.vmare.retail.inventory.forcasting.repository.product.training.ReorderTrainingRepository;
 import com.vmware.retail.inventory.domain.ProductReorder;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.ml.model.ProductReorderModelPrediction;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ReorderInferenceRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

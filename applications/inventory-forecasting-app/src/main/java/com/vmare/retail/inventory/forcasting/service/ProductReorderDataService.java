@@ -1,10 +1,10 @@
 package com.vmare.retail.inventory.forcasting.service;
 
-import com.vmare.retail.inventory.forcasting.repository.product.inference.ReorderInferenceRepository;
 import com.vmare.retail.inventory.forcasting.repository.product.training.ReorderTrainingRepository;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.ml.model.ProductReorderModelPrediction;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ReorderInferenceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,14 +1,14 @@
 package com.vmare.retail.inventory.forcasting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vmare.retail.inventory.forcasting.repository.product.inference.ReorderInferenceRepository;
-import com.vmare.retail.inventory.forcasting.repository.product.inference.gemfire.ReorderInferenceGemFireRepository;
 import com.vmware.retail.inventory.domain.ProductReorder;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.ml.model.ProductReorderModelPrediction;
 import com.vmware.retail.inventory.repository.database.store.product.StoreProductInventoryJdbcRepository;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ReorderInferenceRepository;
 import com.vmware.retail.inventory.repository.product.gemfire.ProductReorderGfRepository;
+import com.vmware.retail.inventory.repository.product.gemfire.ReorderInferenceGemFireRepository;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.store.gemfire.StoreProductInvGfRepository;
 import com.vmware.retail.inventory.repository.writer.StoreProductInventoryCacheWriter;
@@ -77,13 +77,7 @@ public class GemFireConfig {
         region.setName("ProductReorderModelPrediction");
         return region;
     }
-    @Bean
-    ReorderInferenceRepository reorderInferenceRepository()
-    {
-        Supplier<Region<String, ProductReorderModelPrediction>> supplier
-                = () -> { return ClientCacheFactory.getAnyInstance().getRegion("ProductReorderModelPrediction");};
-        return new ReorderInferenceGemFireRepository(supplier);
-    }
+
 
     @Bean
     ProductReorderRepository productReorderRepository()
@@ -100,6 +94,14 @@ public class GemFireConfig {
         Supplier<Region<String, StoreProductInventory>> supplier =
                 () -> { return ClientCacheFactory.getAnyInstance().getRegion("StoreProductInventory");};
         return new StoreProductInvGfRepository(supplier);
+    }
+
+    @Bean
+    ReorderInferenceRepository reorderInferenceRepository()
+    {
+        Supplier<Region<String, ProductReorderModelPrediction>> supplier
+                = () -> { return ClientCacheFactory.getAnyInstance().getRegion("ProductReorderModelPrediction");};
+        return new ReorderInferenceGemFireRepository(supplier);
     }
 
 

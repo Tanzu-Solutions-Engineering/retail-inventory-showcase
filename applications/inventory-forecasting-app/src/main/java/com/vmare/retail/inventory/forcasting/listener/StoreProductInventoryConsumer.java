@@ -3,6 +3,7 @@ package com.vmare.retail.inventory.forcasting.listener;
 import com.vmare.retail.inventory.forcasting.repository.product.training.ReorderTrainingRepository;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ReorderInferenceRepository;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
 public class StoreProductInventoryConsumer implements Consumer<StoreProductInventory> {
 
     private final StoreProductInventoryRepository storeProductInventoryRepository;
-    private final ReorderTrainingRepository reorderTrainingRepository;
+    private final ReorderInferenceRepository reorderInferenceRepository;
 
     private final ProductReorderRepository  productReorderRepository;
 
@@ -25,16 +26,23 @@ public class StoreProductInventoryConsumer implements Consumer<StoreProductInven
 
         log.info("Accept: {}",storeProductInventory);
 
-
         productReorderRepository.deleteById(storeProductInventory.getId());
 
-        var model = this.reorderTrainingRepository.train(storeProductInventory);
+        if(storeProductInventory.getReorderPoint() == 0)
+        {
+            var model = this.reorderInferenceRepository.findByProductIdAndStoreId(
+                    storeProductInventory.getProductId(),
+                    storeProductInventory.getStoreId());
 
-        log.info("Trained Model: {}",model);
-        storeProductInventory.setReorderPoint(model.calculateReorderPoint());
+            log.info("Model: {}",model);
+            if(model.isPresent())
+            {
+                storeProductInventory.setReorderPoint(model.get().calculateReorderPoint());
+                log.info("Saving with calculated reorderPoint: {}",storeProductInventory);
+            }
+        }
 
-        log.info("Saving with calculated reorderPoint: {}",storeProductInventory);
-
+        log.info("Saving: {}",storeProductInventory);
         this.storeProductInventoryRepository.save(storeProductInventory);
     }
 }

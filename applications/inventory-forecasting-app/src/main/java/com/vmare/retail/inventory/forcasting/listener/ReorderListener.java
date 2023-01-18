@@ -28,7 +28,8 @@ public class ReorderListener {
 
         log.info("EVENT: {}",cqEvent);
 
-        if(cqEvent.getBaseOperation().isDestroy())
+        if(cqEvent.getBaseOperation().isDestroy() ||
+                cqEvent.getQueryOperation().isDestroy())
             return;
 
         StoreProductInventory inventory = (StoreProductInventory)cqEvent.getNewValue();

@@ -1,6 +1,7 @@
 package com.vmare.retail.inventory.forcasting.repository.product.inference.gemfire;
 
 import com.vmware.retail.inventory.ml.model.ProductReorderModelPrediction;
+import com.vmware.retail.inventory.repository.product.gemfire.ReorderInferenceGemFireRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.apache.geode.cache.Region;
 import org.junit.jupiter.api.BeforeEach;

@@ -4,6 +4,7 @@ import com.vmare.retail.inventory.forcasting.repository.product.training.Reorder
 import com.vmware.retail.inventory.domain.StoreProductInventory;
 import com.vmware.retail.inventory.ml.model.ProductReorderModelPrediction;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ReorderInferenceRepository;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -28,7 +31,7 @@ class StoreProductInventoryConsumerTest {
     private StoreProductInventoryRepository storeProductInventoryRepository;
 
     @Mock
-    private ReorderTrainingRepository reorderTrainingRepository;
+    private ReorderInferenceRepository reorderInferenceRepository;
 
     private StoreProductInventoryConsumer subject;
     private ProductReorderModelPrediction model = JavaBeanGeneratorCreator.of(ProductReorderModelPrediction.class).create();
@@ -39,7 +42,7 @@ class StoreProductInventoryConsumerTest {
     @BeforeEach
     void setUp() {
         subject = new StoreProductInventoryConsumer(storeProductInventoryRepository,
-                reorderTrainingRepository,productReorderRepository);
+                reorderInferenceRepository,productReorderRepository);
 
     }
 
@@ -47,11 +50,14 @@ class StoreProductInventoryConsumerTest {
     @Test
     void accept() {
 
-        when(this.reorderTrainingRepository.train(any())).thenReturn(model);
+        storeProductInventory.setReorderPoint(0);
+
+        when(this.reorderInferenceRepository.findByProductIdAndStoreId(anyString(),anyString()))
+                .thenReturn(Optional.of(model));
 
         subject.accept(storeProductInventory);
 
-        verify(reorderTrainingRepository).train(any());
+        verify(reorderInferenceRepository).findByProductIdAndStoreId(anyString(),anyString());
 
         verify(productReorderRepository).deleteById(anyString());
 

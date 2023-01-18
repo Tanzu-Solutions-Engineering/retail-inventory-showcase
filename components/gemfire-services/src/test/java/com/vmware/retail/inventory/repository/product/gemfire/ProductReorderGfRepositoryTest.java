@@ -61,4 +61,11 @@ class ProductReorderGfRepositoryTest {
 
         verify(region).put(anyString(),any());
     }
+
+    @Test
+    void deleteById() {
+        subject.deleteById(productReorder.getId());
+
+        verify(region).remove(anyString());
+    }
 }

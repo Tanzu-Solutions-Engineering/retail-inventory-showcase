@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="styles/styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script>
+
+
+    function addProductReorder(reorder)
+    {
+       var reorderPanel = document.getElementById("reorderPanel");
+
+       if(reorder == null || reorder.products.length == 0)
+        {
+            reorderPanel.style = "display: none";
+            return;
+        }
+        else
+        {
+            reorderPanel.style = "display: block";
+        }
+
+        var reorderContent = document.getElementById("reorders");
+        var reorderHTML = "<p>Based on your previous order, you may also be interested in the following:</p>";
+         var product = {};
+
+         reorderHTML += "<table id='dataRows'>";
+         reorderHTML += "<tr><th>Product</th></tr>";
+
+         for (let x in reorder.products) {
+            product = reorder.products[x];
+
+            reorderHTML +="<tr><td>"+product.name+"</td></tr>";
+         }
+
+         reorderHTML += "</table>";
+
+         reorderContent.innerHTML = reorderHTML;
+
+        }
+        </script>
+    </head>
+
+    <body>
+
+    <h1>Hello Inventory Manager</h1>
+
+        <ul>
+            <li><a href="/swagger-ui.html">Swagger-UI</a></li>
+        </ul>
+
+        <div id="reorderPanel" style="display: none">
+            <hr/>
+
+            <h2>Reorders</h2>
+
+            <div class="reorders-container" id="reorders">
+            </div>
+        </div>
+
+
+        <div id="reordersPanel" style="display: none">
+            <hr/>
+            <h2>Product Reorders</h2>
+            <p>These products will be ordered based on reorder points </p>
+            <div id="dataRows">
+                <table >
+                    <tr>
+                        <th>Product</th>
+                        <th>Available</th>
+                        <th>Daily Sales (Avg)</th>
+                        <th>Order Quantity</th>
+                        <th>Reordered Point</th>
+                        <th>Days Delivery (Avg)</th>
+                        <th>Days Delivery (Max)</th>
+                    </tr>
+                    <tbody id="productReorders">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    <script>
+
+    $(document).ready(
+    function() {
+        var sse = new EventSource('inventory/reorders');
+
+        sse.onmessage = function(message) {
+
+        console.log("data: "+message.data);
+       	var productReorders= JSON.parse(message.data);
+       	var tableContent = document.getElementById("productReorders");
+       	tableContent.innerHTML = ""; //TODO: should optimize this to not redraw everytime
+
+        var reorder;
+
+        if(productReorders != null && productReorders.length > 0 )
+        {
+           //show panel
+           var reordersPanel = document.getElementById("reordersPanel");
+           reordersPanel.style  = "display: block";
+        }
+
+
+        for (let x in productReorders) {
+           reorder = productReorders[x];
+
+            if(tableContent.innerHTML.indexOf(reorder.id) > -1)
+        	    continue; //already exist
+
+            $('#productReorders')
+            .prepend('<tr>'+
+                    '<td>'+ reorder.productSku + '</td>'+
+                    '<td>'+ reorder.currentAvailable + '</td>'+
+                    '<td>'+ reorder.avgDailySales + '</td>'+
+                    '<td>'+ reorder.orderQuantity + '</td>'+
+                    '<td>'+ reorder.reorderLevel + '</td>'+
+                    '<td>'+ reorder.avgLeadTimeDays + '</td>'+
+                    '<td>'+ reorder.maxLeadTimeDays + '</td>'+
+                    '</tr>');
+        }
+
+
+       }
+   }
+);
+</script>
+    </body>
+</html>

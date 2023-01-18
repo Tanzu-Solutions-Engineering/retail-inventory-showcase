@@ -11,4 +11,6 @@ public interface ProductReorderRepository {
     Iterable<ProductReorder> findAll();
 
     void save(ProductReorder reorderPoint);
+
+    void deleteById(String id);
 }

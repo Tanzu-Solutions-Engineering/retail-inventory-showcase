@@ -26,6 +26,8 @@ class ReorderListenerTest {
     private StoreProductInventory storeProductInventory = JavaBeanGeneratorCreator.of(StoreProductInventory.class).create();
     @Mock
     private Operation baseOperation;
+    @Mock
+    private Operation queryOperation;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +39,9 @@ class ReorderListenerTest {
 
         when(cqEvent.getNewValue()).thenReturn(storeProductInventory);
         when(cqEvent.getBaseOperation()).thenReturn(baseOperation);
+        when(cqEvent.getQueryOperation()).thenReturn(queryOperation);
         when(baseOperation.isDestroy()).thenReturn(false);
+        when(queryOperation.isDestroy()).thenReturn(false);
 
 
         subject.check(cqEvent);

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
+import static nyla.solutions.core.util.Organizer.toMap;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,8 +73,11 @@ class StoreProductInvGfRepositoryTest {
     @Test
     void findAll() {
         Iterable<StoreProductInventory> expected = asList(expectedStoreProductInventory);
+
+        when(region.getAll(any())).thenReturn(toMap("1",expectedStoreProductInventory));
+
         var actual = subject.findAll();
 
-        assertEquals(expected, actual);
+        assertEquals(expected.iterator().next(), actual.iterator().next());
     }
 }

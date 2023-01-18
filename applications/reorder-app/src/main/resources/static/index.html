@@ -63,11 +63,10 @@
             <hr/>
             <h2>Product Reorders</h2>
             <p>These products will be ordered based on reorder points </p>
-            <div id="dataRows">
+            <div id="dataRows" >
                 <table >
                     <tr>
                         <th>Product</th>
-                        <th>Available</th>
                         <th>Daily Sales (Avg)</th>
                         <th>Order Quantity</th>
                         <th>Reordered Point</th>
@@ -80,6 +79,26 @@
             </div>
         </div>
 
+    <!--- ================================ -->
+
+    <div id="storeProductInventoryPanel" style="display: none">
+        <br/>
+        <hr/>
+        <h2>Store Product Inventory</h2>
+        <p>Current product availability </p>
+        <div id="inventoryRows" class="dataRows">
+            <table >
+                <tr>
+                    <th>Product</th>
+                    <th>Current Available</th>
+                    <th>Reorder Point</th>
+                </tr>
+                <tbody id="productInventories">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 
 
     <script>
@@ -90,41 +109,77 @@
 
         sse.onmessage = function(message) {
 
-        console.log("data: "+message.data);
-       	var productReorders= JSON.parse(message.data);
-       	var tableContent = document.getElementById("productReorders");
-       	tableContent.innerHTML = ""; //TODO: should optimize this to not redraw everytime
+            console.log("data: "+message.data);
+            var productReorders= JSON.parse(message.data);
+            var tableContent = document.getElementById("productReorders");
+            tableContent.innerHTML = ""; //TODO: should optimize this to not redraw everytime
 
-        var reorder;
+            var reorder;
 
-        if(productReorders != null && productReorders.length > 0 )
-        {
-           //show panel
-           var reordersPanel = document.getElementById("reordersPanel");
-           reordersPanel.style  = "display: block";
+            if(productReorders != null && productReorders.length > 0 )
+            {
+               //show panel
+               var reordersPanel = document.getElementById("reordersPanel");
+               reordersPanel.style  = "display: block";
+            }
+
+
+            for (let x in productReorders) {
+               reorder = productReorders[x];
+
+                if(tableContent.innerHTML.indexOf(reorder.id) > -1)
+                    continue; //already exist
+
+                $('#productReorders')
+                .prepend('<tr>'+
+                        '<td>'+ reorder.productSku + '</td>'+
+                        '<td>'+ reorder.avgDailySales + '</td>'+
+                        '<td>'+ reorder.orderQuantity + '</td>'+
+                        '<td>'+ reorder.reorderLevel + '</td>'+
+                        '<td>'+ reorder.avgLeadTimeDays + '</td>'+
+                        '<td>'+ reorder.maxLeadTimeDays + '</td>'+
+                        '</tr>');
+            }
+        };
+
+         //=================================================
+        //Products Inventory
+         var productInvSse = new EventSource('inventory/products');
+
+        productInvSse.onmessage = function(message) {
+
+            var storeProductInventories = JSON.parse(message.data);
+            var tableContent = document.getElementById("productInventories");
+            tableContent.innerHTML = ""; //TODO: should optimize this to not redraw everytime
+
+            console.log("storeProductInventory: "+storeProductInventories);
+
+
+            var product;
+
+            if(storeProductInventories != null && storeProductInventories.length > 0 )
+            {
+               //show panel
+               var storeProductInventoryPanel = document.getElementById("storeProductInventoryPanel");
+               storeProductInventoryPanel.style  = "display: block";
+            }
+
+
+            for (let x in storeProductInventories) {
+               product = storeProductInventories[x];
+
+                if(tableContent.innerHTML.indexOf(product.id) > -1)
+                    continue; //already exist
+
+                $('#productInventories')
+                .prepend('<tr>'+
+                        '<td>'+ product.productId + '</td>'+
+                        '<td>'+ product.currentAvailable + '</td>'+
+                        '<td>'+ product.reorderPoint + '</td>'+
+                        '</tr>');
+            }
         }
 
-
-        for (let x in productReorders) {
-           reorder = productReorders[x];
-
-            if(tableContent.innerHTML.indexOf(reorder.id) > -1)
-        	    continue; //already exist
-
-            $('#productReorders')
-            .prepend('<tr>'+
-                    '<td>'+ reorder.productSku + '</td>'+
-                    '<td>'+ reorder.currentAvailable + '</td>'+
-                    '<td>'+ reorder.avgDailySales + '</td>'+
-                    '<td>'+ reorder.orderQuantity + '</td>'+
-                    '<td>'+ reorder.reorderLevel + '</td>'+
-                    '<td>'+ reorder.avgLeadTimeDays + '</td>'+
-                    '<td>'+ reorder.maxLeadTimeDays + '</td>'+
-                    '</tr>');
-        }
-
-
-       }
    }
 );
 </script>

@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,4 +67,13 @@ class StoreProductInvGfRepositoryTest {
             var actual = subject.findById(expectedStoreProductInventory.getId());
             assertEquals(expectedStoreProductInventory, actual.get());
         }
+
+
+    @Test
+    void findAll() {
+        Iterable<StoreProductInventory> expected = asList(expectedStoreProductInventory);
+        var actual = subject.findAll();
+
+        assertEquals(expected, actual);
+    }
 }

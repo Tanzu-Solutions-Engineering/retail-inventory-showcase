@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.geode.cache.Region;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -37,5 +38,15 @@ public class StoreProductInvGfRepository implements StoreProductInventoryReposit
         var region = supplier.get();
 
         region.put(inventory.getId(),inventory);
+    }
+
+    @Override
+    public Iterable<StoreProductInventory> findAll() {
+
+        var region = supplier.get();
+
+        Map<String,StoreProductInventory> map =  region.getAll(region.keySetOnServer());
+
+        return map.values();
     }
 }

@@ -3,6 +3,7 @@ package com.vmware.retail.inventory.controller;
 import com.vmware.retail.inventory.domain.ProductReorder;
 import com.vmware.retail.inventory.reorder.controller.InventoryController;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,12 +32,15 @@ class InventoryControllerTest {
     private ProductReorder expectedProductReorder = JavaBeanGeneratorCreator.of(ProductReorder.class).create();
     private long frequency = 3;
 
+    @Mock
+    private StoreProductInventoryRepository storeRepo;
+
     @Test
     void when_streamOrders_then_return_list() {
 
         when(repository.findAll()).thenReturn(asList(expectedProductReorder));
 
-        subject = new InventoryController(repository, factory, frequency);
+        subject = new InventoryController(repository, storeRepo,factory, frequency);
 
         var actual = subject.streamReorders();
         assertEquals(asList(expectedProductReorder), actual.blockFirst().data());

@@ -12,8 +12,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,5 +54,15 @@ class StoreProductInventoryJdbcRepositoryTest {
 
         verify(template).update(anyString(),any(Map.class));
 
+    }
+
+    @Test
+    void findAll() {
+        List<StoreProductInventory> expected =  asList(storeProductInventory);
+
+        when(template.query(anyString(),any(RowMapper.class))).thenReturn(expected);
+        var actual = subject.findAll();
+
+        assertEquals(expected, actual);
     }
 }

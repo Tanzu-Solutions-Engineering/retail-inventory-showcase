@@ -83,4 +83,31 @@ public class StoreProductInventoryJdbcRepository implements StoreProductInventor
                         ));
 
     }
+
+    @Override
+    public Iterable<StoreProductInventory> findAll() {
+
+        String sql = """
+                select data 
+                from pos_store_product_inv
+                """;
+
+        RowMapper<StoreProductInventory> rowMapper = (resultSet,i) ->
+        {
+            try {
+                return objectMapper.readValue(resultSet.getString(1),StoreProductInventory.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        log.info(" SQL: {}",sql);
+
+        List<StoreProductInventory> storeProductInventories = template.query(sql,rowMapper);
+
+        log.info("storeProductInventories",storeProductInventories);
+
+        return storeProductInventories;
+
+    }
 }

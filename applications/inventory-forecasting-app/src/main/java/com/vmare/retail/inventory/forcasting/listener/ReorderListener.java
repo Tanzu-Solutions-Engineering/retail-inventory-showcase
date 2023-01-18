@@ -11,20 +11,16 @@ import org.springframework.stereotype.Component;
 /**
  * @author gregory green
  */
-@Component
 @Slf4j
-public class ReorderListener {
-    private final ProductReorderService productReorderService;
+    @Component
 
-    public ReorderListener(ProductReorderService productReorderService){
-        this.productReorderService = productReorderService;
-    }
+    public class ReorderListener {
 
-    @ContinuousQuery(query =
-            "select *                                           " +
-            "from /StoreProductInventory                        "+
-            "where currentAvailable <= reorderPoint")
-    public void check(CqEvent cqEvent) {
+        @ContinuousQuery(query =
+                "select *                                           "+
+                "from /StoreProductInventory                        "+
+                "where currentAvailable <= reorderPoint")
+        public void check(CqEvent cqEvent) {
 
         log.info("EVENT: {}",cqEvent);
 
@@ -38,4 +34,11 @@ public class ReorderListener {
 
         productReorderService.submitReorder(inventory);
     }
+
+    private final ProductReorderService productReorderService;
+
+    public ReorderListener(ProductReorderService productReorderService){
+        this.productReorderService = productReorderService;
+    }
+
 }

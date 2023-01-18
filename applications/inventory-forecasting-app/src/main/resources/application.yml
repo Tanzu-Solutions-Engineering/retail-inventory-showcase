@@ -16,7 +16,7 @@ spring:
   cloud:
     #    function.definition: newOrderProcessor;newOrderProcessor
     function:
-      definition: storeProductInventoryConsumer
+      definition: storeProductInventoryConsumer;productModelPredictionConsumer
     stream:
       default:
         contentType: "application/json"
@@ -26,8 +26,23 @@ spring:
           group: ${spring.application.name}
           consumer:
             concurrency: 1
+        productModelPredictionConsumer-in-0:
+          destination: retail.productModelPrediction
+          group: ${spring.application.name}
+          consumer:
+            concurrency: 1
       rabbit:
         bindings:
+          productModelPredictionConsumer-in-0:
+            consumer:
+              autoBindDlq: true
+              quorum.enabled: true
+              #              containerType: stream
+              queueNameGroupOnly: false
+              #              quorum.enabled: true
+              #              dlqQuorum:
+              #                enabled: true
+              prefetch: 10000
           storeProductInventoryConsumer-in-0:
             consumer:
               autoBindDlq: true

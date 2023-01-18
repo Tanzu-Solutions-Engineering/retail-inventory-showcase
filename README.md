@@ -102,3 +102,25 @@ Exchange: retail.storeProductInventory
   "currentAvailable": 50
 }
 ```
+
+--------------------
+
+# Prediction Models
+
+
+Exchange: retail.productModelPrediction
+
+
+```json
+{
+  "id":"SKU-PEANUT-BUTTER|001",
+  "storeId":"001",
+  "productId":"SKU-PEANUT-BUTTER",
+  "averageDailySales":9,
+  "averageDailyOrders":3,
+  "averageLeadTimeDays":5,
+  "maxDailyOrders":3,
+  "maxLeadTimeDays":5,
+  "maxDailySales":12
+}
+```

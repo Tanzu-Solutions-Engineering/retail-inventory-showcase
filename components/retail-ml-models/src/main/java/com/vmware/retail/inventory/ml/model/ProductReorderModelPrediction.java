@@ -29,7 +29,7 @@ public class ProductReorderModelPrediction {
     {
         return ProductReorder.builder()
                 .productSku(storeProductInventory.getProductId())
-                .reorderLevel(calculateReorderPoint()) //calculate
+                .reorderLevel(storeProductInventory.getReorderPoint()) //calculate
                 .avgDailySales(averageDailySales)
                 .avgLeadTimeDays(averageLeadTimeDays)
                 .orderQuantity(calculateReorderQuantity()) //calculate

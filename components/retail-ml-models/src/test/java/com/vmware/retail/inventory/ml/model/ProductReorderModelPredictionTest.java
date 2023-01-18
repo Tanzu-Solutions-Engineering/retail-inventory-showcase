@@ -51,7 +51,7 @@ class ProductReorderModelPredictionTest {
                 .maxDailySales(maxDailySales)
                 .maxLeadTimeDays(maxLeadTimeDays)
                 .orderQuantity(expectOrderQuantity)
-                .reorderLevel(expectedReorderLevel)
+                .reorderLevel(storeProductInventory.getReorderPoint())
                 .build();
 
 

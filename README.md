@@ -35,8 +35,16 @@ run --file=/Users/Projects/VMware/Tanzu/Use-Cases/Vertical-Industries/VMware-Ret
 ```
 
 
-# Transaction Testing
 
+## User Interface
+
+![ui.png](docs/images/ui.png)
+
+# Submit Transaction Testing
+
+
+
+Exchange: retail.transaction
 
 contentType = application/json
 
@@ -72,7 +80,7 @@ With Timestamp
 ```
 
 
-# StoreProductInventory Testing
+# Update StoreProductInventory Testing
 
 Exchange: retail.storeProductInventory
 

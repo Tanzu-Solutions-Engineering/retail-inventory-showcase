@@ -4,6 +4,7 @@ import com.vmware.retail.inventory.domain.ProductReorder;
 import com.vmware.retail.inventory.reorder.controller.InventoryController;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
+import com.vmware.retail.inventory.service.product.ProductInventoryService;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +22,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class InventoryControllerTest {
 
-    @Mock
-    private ProductReorderRepository repository;
 
     @Mock
     private InventoryController subject;
@@ -33,18 +32,18 @@ class InventoryControllerTest {
     private long frequency = 3;
 
     @Mock
-    private StoreProductInventoryRepository storeRepo;
+    private ProductInventoryService service;
 
     @Test
     void when_streamOrders_then_return_list() {
 
-        when(repository.findAll()).thenReturn(asList(expectedProductReorder));
+        when(service.findAllProductReorders()).thenReturn(asList(expectedProductReorder));
 
-        subject = new InventoryController(repository, storeRepo,factory, frequency);
+        subject = new InventoryController(service,factory, frequency);
 
         var actual = subject.streamReorders();
         assertEquals(asList(expectedProductReorder), actual.blockFirst().data());
 
-        verify(this.repository).findAll();
+        verify(this.service).findAllProductReorders();
     }
 }

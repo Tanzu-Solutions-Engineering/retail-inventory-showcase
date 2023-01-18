@@ -3,11 +3,15 @@ package com.vmware.retail.inventory.reorder;
 
 import com.vmware.retail.inventory.domain.ProductReorder;
 import com.vmware.retail.inventory.domain.StoreProductInventory;
+import com.vmware.retail.inventory.ml.model.ProductReorderModelPrediction;
 import com.vmware.retail.inventory.repository.product.ProductReorderRepository;
+import com.vmware.retail.inventory.repository.product.ReorderInferenceRepository;
 import com.vmware.retail.inventory.repository.product.gemfire.ProductReorderGfRepository;
+import com.vmware.retail.inventory.repository.product.gemfire.ReorderInferenceGemFireRepository;
 import com.vmware.retail.inventory.repository.store.StoreProductInventoryRepository;
 import com.vmware.retail.inventory.repository.store.gemfire.StoreProductInvGfRepository;
-import com.vmware.retail.inventory.repository.writer.StoreProductInventoryCacheWriter;
+import com.vmware.retail.inventory.service.product.ProductInventoryDataService;
+import com.vmware.retail.inventory.service.product.ProductInventoryService;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
@@ -36,6 +40,16 @@ public class GemFireConfig {
     ReflectionBasedAutoSerializer pdxSerializer()
     {
         return new ReflectionBasedAutoSerializer(".*");
+    }
+
+    @Bean
+    ClientRegionFactoryBean<String, ProductReorderModelPrediction> productReorderModelPredictionRegion(GemFireCache gemFireCache)
+    {
+        var region = new ClientRegionFactoryBean();
+        region.setCache(gemFireCache);
+        region.setDataPolicy(DataPolicy.EMPTY);
+        region.setName("ProductReorderModelPrediction");
+        return region;
     }
 
     @Bean
@@ -68,10 +82,29 @@ public class GemFireConfig {
     }
 
     @Bean
+    ReorderInferenceRepository reorderInferenceRepository()
+    {
+        Supplier<Region<String, ProductReorderModelPrediction>> supplier
+                = () -> { return ClientCacheFactory.getAnyInstance().getRegion("ProductReorderModelPrediction");};
+        return new ReorderInferenceGemFireRepository(supplier);
+    }
+
+    @Bean
     StoreProductInventoryRepository storeProductInventoryRepository()
     {
         Supplier<Region<String, StoreProductInventory>> supplier =
                 () -> { return ClientCacheFactory.getAnyInstance().getRegion("StoreProductInventory");};
         return new StoreProductInvGfRepository(supplier);
+    }
+
+    @Bean
+    ProductInventoryService productInventoryService(
+            StoreProductInventoryRepository storeProductInventoryRepository,
+            ReorderInferenceRepository reorderInferenceRepository,
+            ProductReorderRepository productReorderRepository)
+    {
+        return new ProductInventoryDataService(storeProductInventoryRepository,
+                reorderInferenceRepository,
+                productReorderRepository);
     }
 }

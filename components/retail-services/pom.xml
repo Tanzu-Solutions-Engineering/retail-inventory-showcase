@@ -64,7 +64,12 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.vmware</groupId>
+            <artifactId>retail-ml-models</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 <!--	<build>-->
 <!--		<plugins>-->

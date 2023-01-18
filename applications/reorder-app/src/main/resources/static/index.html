@@ -67,11 +67,9 @@
                 <table >
                     <tr>
                         <th>Product</th>
-                        <th>Daily Sales (Avg)</th>
                         <th>Order Quantity</th>
                         <th>Reordered Point</th>
                         <th>Days Delivery (Avg)</th>
-                        <th>Days Delivery (Max)</th>
                     </tr>
                     <tbody id="productReorders">
                     </tbody>
@@ -92,6 +90,9 @@
                     <th>Product</th>
                     <th>Current Available</th>
                     <th>Reorder Point</th>
+                    <th>Daily Sales (Avg)</th>
+                    <th>Lead Time (Avg)</th>
+                    <th>Est Reorder Quantity</th>
                 </tr>
                 <tbody id="productInventories">
                 </tbody>
@@ -138,11 +139,9 @@
                 $('#productReorders')
                 .prepend('<tr>'+
                         '<td>'+ reorder.productSku + '</td>'+
-                        '<td>'+ reorder.avgDailySales + '</td>'+
                         '<td>'+ reorder.orderQuantity + '</td>'+
                         '<td>'+ reorder.reorderLevel + '</td>'+
                         '<td>'+ reorder.avgLeadTimeDays + '</td>'+
-                        '<td>'+ reorder.maxLeadTimeDays + '</td>'+
                         '</tr>');
             }
         };
@@ -176,11 +175,15 @@
                 if(tableContent.innerHTML.indexOf(product.id) > -1)
                     continue; //already exist
 
+                //storeProductInventory
                 $('#productInventories')
                 .prepend('<tr>'+
-                        '<td>'+ product.productId + '</td>'+
-                        '<td>'+ product.currentAvailable + '</td>'+
-                        '<td>'+ product.reorderPoint + '</td>'+
+                        '<td>'+ product.storeProductInventory.productId + '</td>'+
+                        '<td>'+ product.storeProductInventory.currentAvailable + '</td>'+
+                        '<td>'+ product.storeProductInventory.reorderPoint + '</td>'+
+                        '<td>'+ product.model.averageDailySales + '</td>'+
+                        '<td>'+ product.model.averageLeadTimeDays + '</td>'+
+                        '<td>'+ product.estReorderAmount + '</td>'+
                         '</tr>');
             }
         }

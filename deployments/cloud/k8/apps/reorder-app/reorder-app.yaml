@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  reorder-app
+    app.kubernetes.io/name: reorder-app
+  name:  reorder-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  reorder-app
+  template:
+    metadata:
+      labels:
+        name:  reorder-app
+    spec:
+      containers:
+        - env:
+            - name: retail.customer.id
+              value: "nyla"
+            - name: spring.datasource.url
+              value: "jdbc:postgresql://postgresdb/postgresdb"
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: postgresdb-db-secret
+                  key: username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: postgresdb-db-secret
+                  key: password
+            - name: spring.data.gemfire.pool.default.locators
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-gf-config
+                  key: locators
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+          image: cloudnativedata/reorder-app:0.0.1-SNAPSHOT
+          name: reorder-app
+          #          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reorder-app
+spec:
+  selector:
+    name:  reorder-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+#  type: ClusterIP
+  type: LoadBalancer

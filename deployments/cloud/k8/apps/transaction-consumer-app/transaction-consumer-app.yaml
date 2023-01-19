@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  transaction-consumer-app
+    app.kubernetes.io/name: transaction-consumer-app
+  name:  transaction-consumer-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  transaction-consumer-app
+  template:
+    metadata:
+      labels:
+        name:  transaction-consumer-app
+    spec:
+      containers:
+        - env:
+            - name: retail.customer.id
+              value: "nyla"
+            - name: spring.datasource.url
+              value: "jdbc:postgresql://postgresdb/postgresdb"
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: postgresdb-db-secret
+                  key: username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: postgresdb-db-secret
+                  key: password
+            - name: spring.data.gemfire.pool.default.locators
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-gf-config
+                  key: locators
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+          image: cloudnativedata/transaction-consumer-app:0.0.1-SNAPSHOT
+          name: transaction-consumer-app
+          #          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent

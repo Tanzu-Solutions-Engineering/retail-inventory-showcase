@@ -1,0 +1,15 @@
+type Product {
+    id: String!
+    name: String!
+}
+
+
+# The Root Query for the application
+type Query {
+    products(count: Int, offset: Int): [Product]!
+}
+
+# The Root Mutation for the application
+type Mutation {
+    saveProduct(id: String!, name: String!) : Product!
+}

@@ -12,4 +12,11 @@ import lombok.NoArgsConstructor;
 public class Product {
     private String id;
     private String name;
+    private Double price;
+    private String details;
+    private String ingredients;
+    private String directions;
+    private String warnings;
+    private String quantityAmount;
+    private Nutrition nutrition;
 }

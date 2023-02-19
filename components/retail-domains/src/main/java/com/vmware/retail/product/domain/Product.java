@@ -1,4 +1,4 @@
-package io.spring.retail.product.domain;
+package com.vmware.retail.product.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

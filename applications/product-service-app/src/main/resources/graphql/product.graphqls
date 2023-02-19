@@ -24,7 +24,14 @@ type Nutrition {
 # The Root Query for the application
 type Query {
     products(count: Int, offset: Int): [Product]!
+
+    queryProducts(query: String!): [Product]!
 }
+
+# The Root Query for the application
+#type Query {
+#
+#}
 
 # The Root Mutation for the application
 type Mutation {
@@ -45,26 +52,4 @@ type Mutation {
         calories: Int) : Product!
 }
 
-#    ,nutrition :  NutritionInput
 
-input ProductInput {
-    id: String!
-    name: String!
-    price: Float
-    details: String
-    ingredients: String
-    directions: String
-    warnings: String
-    quantityAmount: String
-
-}
-
-input NutritionInput {
-    totalFatAmount: Int
-    cholesterol: Int
-    sodium: Int
-    totalCarbohydrate: Int
-    sugars: Int
-    protein: Int
-    calories: Int
-}

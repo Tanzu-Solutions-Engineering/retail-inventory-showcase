@@ -9,6 +9,15 @@ query {
 }
 ```
 
+```graphql
+query {
+    queryProducts(query: "id like 'sku-peanut%'") {
+        name
+        
+    }
+}
+```
+
 
 ```graphql
 mutation SaveProduct ($id: String!, $name: String!, $price: Float, $details: String, $ingredients: String, $directions: String, $warnings: String,
@@ -48,8 +57,8 @@ Variables
 
 ```graphql
 {
-    "id":"hello",
-    "name" : "world",
+    "id" : "sku-peanut-butter",
+    "name" : "Peanut Butter",
     "price" : 3.3,
     "details" : "details",
     "ingredients" : "ingredients",

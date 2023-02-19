@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: "product-service-app"
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username : postgres
+  data:
+    gemfire:
+      pool:
+        default:
+          locators: localhost[10334]
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+    path: /graphql
+    schema:
+      printer:
+        enabled: true
+#    change-log: "classpath:db/changelog/changelog-v1.sql"
+#

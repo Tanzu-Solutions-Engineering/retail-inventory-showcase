@@ -1,8 +1,8 @@
 package io.spring.retail.product.controller;
 
-import io.spring.retail.product.domain.Nutrition;
-import io.spring.retail.product.domain.Product;
-import io.spring.retail.product.repository.ProductRepository;
+import com.vmware.retail.product.domain.Nutrition;
+import com.vmware.retail.product.domain.Product;
+import io.spring.retail.product.repository.ProductGemFireRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private final ProductGemFireRepository productRepository;
 
     @MutationMapping
     public Product saveProduct(@Argument String id,
@@ -64,5 +64,11 @@ public class ProductController {
     public Iterable<Product> products(@Argument int count, @Argument int offset)
     {
         return productRepository.findAll();
+    }
+
+    @QueryMapping
+    public Iterable<Product> queryProducts( @Argument String query)
+    {
+        return productRepository.queryProducts(query);
     }
 }

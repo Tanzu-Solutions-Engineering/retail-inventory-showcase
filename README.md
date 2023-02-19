@@ -124,3 +124,111 @@ Exchange: retail.productModelPrediction
   "maxDailySales":12
 }
 ```
+
+
+----------------
+
+```graphql
+query {
+    products(count: 10, offset: 0) {
+        name,
+    id,
+    price,
+    directions,
+    nutrition {
+      totalFatAmount
+      cholesterol
+      sodium
+      totalCarbohydrate
+      sugars
+      protein
+      calories
+    }
+    }
+}
+# query {
+#     queryProducts(query: "id like '%'") {
+#         name,
+#     details
+        
+#     }
+# }
+# mutation SaveProduct ($product: Product) {
+#   saveProduct(product: $Product) {
+#     Product {
+#       id : id,
+#       name : name
+#     }
+#   }
+# }
+# input ProductInput {
+#     id: String!
+#     name: String!
+#     price: Float
+#     details: String
+#     ingredients: String
+#     directions: String
+#     warnings: String
+#     quantityAmount: String
+# }
+
+# input NutritionInput {
+#     totalFatAmount: Int
+#     cholesterol: Int
+#     sodium: Int
+#     totalCarbohydrate: Int
+#     sugars: Int
+#     protein: Int
+#     calories: Int
+# }
+
+# mutation SaveProduct ($id: String!, $name: String!, $price: Float, $details: String, $ingredients: String, $directions: String, $warnings: String, $quantityAmount: String) {
+#     saveProduct(id: $id, name: $name,price: $price,
+#         details : $details,
+#         ingredients : $ingredients,
+#         directions : $directions,
+#         warnings : $warnings,
+#         quantityAmount : $quantityAmount
+#     ) {
+#         id : id,
+#         name : name,
+#         price : price,
+#         details : details,
+#         ingredients : ingredients,
+#         directions : directions,
+#         warnings : warnings,
+#         quantityAmount : quantityAmount
+#     }
+# }
+# mutation SaveProduct ($id: String!, $name: String!, $price: Float, $details: String, $ingredients: String, $directions: String, $warnings: String, 
+#     $quantityAmount: String, $totalFatAmount: Int,
+#     $cholesterol: Int, $sodium: Int,
+#     $totalCarbohydrate: Int, $sugars: Int, $protein: Int,
+#     $calories: Int) {
+#     saveProduct(id: $id, 
+#         name: $name,
+#         price: $price,
+#         details : $details,
+#         ingredients : $ingredients,
+#         directions : $directions,
+#         warnings : $warnings,
+#         quantityAmount : $quantityAmount,
+#         totalFatAmount: $totalFatAmount,
+#         cholesterol: $cholesterol,
+#         sodium: $sodium,
+#         totalCarbohydrate: $totalCarbohydrate,
+#         sugars: $sugars,
+#         protein: $protein,
+#         calories: $calories) {
+#         id : id,
+#         name : name,
+#         price : price,
+#         details : details,
+#         ingredients : ingredients,
+#         directions : directions,
+#         warnings : warnings,
+#         quantityAmount : quantityAmount
+#     }
+# }
+
+```

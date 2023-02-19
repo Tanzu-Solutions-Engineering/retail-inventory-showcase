@@ -68,81 +68,6 @@ psql -d postgres -U postgres
 alter async-event-queue --id=rabbit --pause-event-processing=false --batch-size=100
 ```
 
-```sqlite-sql
-
-
-
-
-insert into customers("firstName", "lastName",email)
-(select r."firstName", r."lastName",email
-    from json_to_record('{"firstName": "John","lastName":"Smith","email":"jsmith@vmware.com"}') 
-    as r("firstName" varchar, "lastName" varchar, email text)) 
-ON CONFLICT(email) DO UPDATE SET "firstName" = customers."firstName"
-
-
-insert into customers("firstName", "lastName",email)
-(select r."firstName", r."lastName",email
-    from json_to_record('{"firstName": "Joe","lastName":"Smiths","email":"jsmith@vmware.com"}') 
-    as r("firstName" varchar, "lastName" varchar, email text)) 
-ON CONFLICT(email) 
-DO UPDATE SET "firstName" = EXCLUDED."firstName", 
-                "lastName" = EXCLUDED."lastName"
-    
-select row_to_json(customers)
-from customers
-where email = 'e1@theRevelationSquad.com'
-    
-```
-
-
-
-```shell
-curl -X 'PUT' \
-'http://localhost:9090/geode/v1/customers?keys=jdoe%40vmware.com&op=PUT' \
--H 'accept: application/json;charset=UTF-8' \
--H 'Content-Type: application/json;charset=UTF-8' \
--d '{
-"email" : "jdoe@vmware.com",
-"firstName" : "Jane",
-"lastName" : "Doe"
-}'   
-```
-
-```shell
-curl -X 'PUT' \
-'http://localhost:9090/geode/v1/customers?keys=gdoe%40vmware.com&op=PUT' \
--H 'accept: application/json;charset=UTF-8' \
--H 'Content-Type: application/json;charset=UTF-8' \
--d '{
-"email" : "gdoe@vmware.com",
-"firstName" : "Gill",
-"lastName" : "Doe"
-}'   
-```
-
-```shell
-curl -X 'PUT' \
-'http://localhost:9090/geode/v1/customers?keys=jsmith%40vmware.com&op=PUT' \
--H 'accept: application/json;charset=UTF-8' \
--H 'Content-Type: application/json;charset=UTF-8' \
--d '{
-"email" : "jsmith@vmware.com",
-"firstName" : "John",
-"lastName" : "Smith"
-}'   
-```
-
-```shell
-curl -X 'PUT' \
-'http://localhost:9090/geode/v1/customers?keys=msmith%40vmware.com&op=PUT' \
--H 'accept: application/json;charset=UTF-8' \
--H 'Content-Type: application/json;charset=UTF-8' \
--d '{
-"email" : "msmith@vmware.com",
-"firstName" : "Mary",
-"lastName" : "Smith"
-}'   
-```
 
 In gfsh
 
@@ -157,28 +82,38 @@ curl -X 'GET' \
 
 
 
-query --query="select * from  /customers where lastName like  'S%'"
+In GemFire
 
-
-
-Got http://localhost:9090/geode/swagger-ui/index.html#/queries/runAdhocQuery
-select * from  /customers where lastName like  'S%25'
-or run
 ```shell
-curl -X 'GET' \
-  'http://localhost:9090/geode/v1/queries/adhoc?q=select%20%2A%20from%20%20%2Fcustomers%20where%20lastName%20like%20%20%27S%2525%27' \
-  -H 'accept: application/json;charset=UTF-8'
+query --query="select * from /Product"
 ```
 
+In Postgres
+
+```sql
+select id, 
+    data->'name' name, 
+    data->'price' price,
+    data->'details' details,
+    data->'warnings' warnings,
+    data->'nutrition'->'sodium' nutri_sodium,
+    data->'nutrition'->'sugars' nutri_sugars,
+    data->'nutrition'->'protein' nutri_protein,
+    data->'nutrition'->'calories' nutri_nutrition,
+    data->'nutrition'->'cholesterol' nutri_cholesterol,
+    data->'nutrition'->'totalFatAmount' nutri_totalFatAmount,
+    data->'nutrition'->'totalCarbohydrate' nutri_totalCarbohydrate
+from products;
+```
+
+```roomsql
+select * from products;
+```
 
 
 ------------------------
 
 
-```shell
-start server --name=server2 --initial-heap=500m --max-heap=500m  --locators="127.0.0.1[10334],127.0.0.1[10434]"  --server-port=40402 --bind-address=127.0.0.1 --hostname-for-clients=127.0.0.1 --start-rest-api=true --http-service-bind-address=127.0.0.1 --http-service-port=9092  --J=-Dgemfire-for-redis-port=6372 --J=-Dgemfire-for-redis-enabled=true --include-system-classpath=true --J=-DCRYPTION_KEY=PIVOTAL --J=-Dconfig.properties=/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/deployments/gemfire-server/config/gf-extensions.properties
-
-```
 
 
 select row_to_json(customers) from customers

@@ -1,24 +1,26 @@
-type Product {
-    id: String!
-    name: String!
-    price: Float
-    details: String
-    ingredients: String
-    directions: String
-    warnings: String
-    quantityAmount: String,
-    nutrition :  Nutrition
-}
 
-type Nutrition {
-    totalFatAmount: Int
-    cholesterol: Int
-    sodium: Int
-    totalCarbohydrate: Int
-    sugars: Int
-    protein: Int
-    calories: Int
-}
+
+    type Product {
+        id: String!
+        name: String!
+        price: Float
+        details: String
+        ingredients: String
+        directions: String
+        warnings: String
+        quantityAmount: String,
+        nutrition :  Nutrition
+    }
+
+    type Nutrition {
+        totalFatAmount: Int
+        cholesterol: Int
+        sodium: Int
+        totalCarbohydrate: Int
+        sugars: Int
+        protein: Int
+        calories: Int
+    }
 
 
 # The Root Query for the application

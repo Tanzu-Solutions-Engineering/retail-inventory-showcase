@@ -1,0 +1,57 @@
+
+
+    type Product {
+        id: String!
+        name: String!
+        price: Float
+        details: String
+        ingredients: String
+        directions: String
+        warnings: String
+        quantityAmount: String,
+        nutrition :  Nutrition
+    }
+
+    type Nutrition {
+        totalFatAmount: Int
+        cholesterol: Int
+        sodium: Int
+        totalCarbohydrate: Int
+        sugars: Int
+        protein: Int
+        calories: Int
+    }
+
+
+# The Root Query for the application
+type Query {
+    findProductById(id: String!): Product
+
+    queryProducts(query: String!): [Product]!
+}
+
+# The Root Query for the application
+#type Query {
+#
+#}
+
+# The Root Mutation for the application
+type Mutation {
+    saveProduct(id: String!,
+        name: String!,
+        price: Float,
+        details: String,
+        ingredients: String,
+        directions: String,
+        warnings: String,
+        quantityAmount: String,
+        totalFatAmount: Int
+        cholesterol: Int
+        sodium: Int
+        totalCarbohydrate: Int
+        sugars: Int
+        protein: Int
+        calories: Int) : Product!
+}
+
+

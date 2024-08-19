@@ -17,6 +17,7 @@
         <module>applications/reorder-app</module>
         <module>applications/transaction-consumer-app</module>
         <module>applications/inventory-forecasting-app</module>
+        <module>applications/product-service-app</module>
     </modules>
     <build>
         <pluginManagement>

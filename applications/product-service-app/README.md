@@ -1,30 +1,30 @@
 create region --name=Product --type=PARTITION
 
-                                                                                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                                                                                                                        ```graphql
-                                                                                                                                                                                                                                                                                                                                                                        query {
-                                                                                                                                                                                                                                                                                                                                                                        products(count: 10, offset: 0) {
-                                                                                                                                                                                                                                                                                                                                                                            name
-                                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                                        ```
-                                                                                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                                                                                                                        ```graphql
-                                                                                                                                                                                                                                                                                                                                                                        query {
-                                                                                                                                                                                                                                                                                                                                                                        queryProducts(query: "id like 'sku-peanut%'") {
-                                                                                                                                                                                                                                                                                                                                                                            name
-                                                                                                                                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                                        ```
-                                                                                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                                                                                                                        ```graphql
-                                                                                                                                                                                                                                                                                                                                                                        mutation SaveProduct ($id: String!, $name: String!, $price: Float, $details: String, $ingredients: String, $directions: String, $warnings: String,
-                                                                                                                                                                                                                                                                                                                                                                        $quantityAmount: String, $totalFatAmount: Int,
-                                                                                                                                                                                                                                                                                                                                                                        $cholesterol: Int, $sodium: Int,
-                                                                                                                                                                                                                                                                                                                                                                        $totalCarbohydrate: Int, $sugars: Int, $protein: Int,
-                                                                                                                                                                                                                                                                                                                                                                        $calories: Int) {
+
+```graphql
+query {
+    findById(id: "sku-peanut-butter") {
+        name
+    }
+}
+```
+
+```graphql
+query {
+    queryProducts(query: "id like 'sku-peanut-butter'") {
+        name
+        
+    }
+}
+```
+
+
+```graphql
+mutation SaveProduct ($id: String!, $name: String!, $price: Float, $details: String, $ingredients: String, $directions: String, $warnings: String,
+    $quantityAmount: String, $totalFatAmount: Int,
+    $cholesterol: Int, $sodium: Int,
+    $totalCarbohydrate: Int, $sugars: Int, $protein: Int,
+    $calories: Int) {
     saveProduct(id: $id,
         name: $name,
         price: $price,
@@ -72,5 +72,16 @@ Variables
     "sugars": 3,
     "protein": 3,
     "calories": 3
+}
+```
+
+
+
+```shell
+query {
+    findProductById(id: "sku-peanut-butter") {
+        name,
+        id
+    }
 }
 ```

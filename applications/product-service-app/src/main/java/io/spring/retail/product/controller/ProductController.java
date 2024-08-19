@@ -61,9 +61,9 @@ public class ProductController {
     }
 
     @QueryMapping
-    public Iterable<Product> products(@Argument int count, @Argument int offset)
+    public Product findProductById(@Argument String id)
     {
-        return productRepository.findAll();
+        return productRepository.findById(id);
     }
 
     @QueryMapping

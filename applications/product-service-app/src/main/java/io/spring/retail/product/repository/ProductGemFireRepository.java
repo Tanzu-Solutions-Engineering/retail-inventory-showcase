@@ -23,4 +23,8 @@ public class ProductGemFireRepository {
     public void save(Product product) {
         repository.save(product);
     }
+
+    public Product findById(String id) {
+        return repository.findById(id).orElse(null);
+    }
 }

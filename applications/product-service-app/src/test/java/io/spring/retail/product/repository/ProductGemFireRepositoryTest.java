@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.gemfire.GemfireTemplate;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -59,5 +61,14 @@ class ProductGemFireRepositoryTest {
 
         Iterable<Product> actual = subject.queryProducts("details like 'D%'");
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void given_id_when_findById_then_Return_Product() {
+
+        Product expected = JavaBeanGeneratorCreator.of(Product.class).create();
+
+        when(repository.findById(anyString())).thenReturn(Optional.of(expected));
+        assertEquals(expected, subject.findById(expected.getId()));
     }
 }

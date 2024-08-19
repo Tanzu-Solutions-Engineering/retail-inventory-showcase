@@ -9,7 +9,7 @@ java -DCRYPTION_KEY=PIVOTAL -classpath /Users/Projects/VMware/Tanzu/TanzuData/Ta
 
 
 ```shell
-export CLASSPATH="/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/components/gemfire-extensions-core/build/libs/gemfire-extensions-core-1.2.0.jar:/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/components/gemfire-rabbitmq/build/libs/gemfire-rabbitmq-1.0.0.jar:/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/deployments/gemfire-server/lib/*"
+export CLASSPATH="/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/components/gemfire-extensions-core/build/libs/gemfire-extensions-core-1.2.1-SNAPSHOT.jar:/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/components/gemfire-rabbitmq/build/libs/gemfire-rabbitmq-1.0.0.jar:/Users/Projects/VMware/Tanzu/TanzuData/TanzuGemFire/dev/gemfire-extensions/deployments/gemfire-server/lib/*"
 
 export JDBC_URL=jdbc:postgresql://localhost:5432/postgres
 export JDBC_DRIVER_CLASS=org.postgresql.Driver
@@ -85,7 +85,11 @@ curl -X 'GET' \
 In GemFire
 
 ```shell
-query --query="select * from /Product"
+query --query="select * from /Product where id = 'sku-1'"
+```
+
+```shell
+query --query="select * from /Product where id = 'sku-peanut-butter'"
 ```
 
 In Postgres
@@ -107,7 +111,9 @@ from products;
 ```
 
 ```roomsql
-select * from products;
+select * from products where id = 'sku-1';
+
+select * from products where id = '"sku-1"';
 ```
 
 
@@ -116,4 +122,70 @@ select * from products;
 
 
 
-select row_to_json(customers) from customers
+
+```graphql
+mutation SaveProduct ($id: String!, $name: String!, $price: Float, $details: String, $ingredients: String, $directions: String, $warnings: String,
+    $quantityAmount: String, $totalFatAmount: Int,
+    $cholesterol: Int, $sodium: Int,
+    $totalCarbohydrate: Int, $sugars: Int, $protein: Int,
+    $calories: Int) {
+    saveProduct(id: $id,
+        name: $name,
+        price: $price,
+        details : $details,
+        ingredients : $ingredients,
+        directions : $directions,
+        warnings : $warnings,
+        quantityAmount : $quantityAmount,
+        totalFatAmount: $totalFatAmount,
+        cholesterol: $cholesterol,
+        sodium: $sodium,
+        totalCarbohydrate: $totalCarbohydrate,
+        sugars: $sugars,
+        protein: $protein,
+        calories: $calories) {
+        id : id,
+        name : name,
+        price : price,
+        details : details,
+        ingredients : ingredients,
+        directions : directions,
+        warnings : warnings,
+        quantityAmount : quantityAmount
+    }
+}
+
+```
+
+Variables
+
+```graphql
+{
+    "id" : "sku-peanut-butter",
+    "name" : "Peanut Butter",
+    "price" : 3.3,
+    "details" : "details",
+    "ingredients" : "ingredients",
+    "directions" : "directions",
+    "warnings" : "warnings",
+    "quantityAmount" : "quantityAmount",
+    "totalFatAmount": 3,
+    "cholesterol": 3,
+    "sodium": 3,
+    "totalCarbohydrate": 3,
+    "sugars": 3,
+    "protein": 3,
+    "calories": 3
+}
+```
+
+
+
+```shell
+query {
+    findProductById(id: "sku-peanut-butter") {
+        name,
+        id
+    }
+}
+```
